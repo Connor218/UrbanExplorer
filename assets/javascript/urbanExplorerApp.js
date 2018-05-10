@@ -1,18 +1,4 @@
-/* 
-# Gif digger
-Pseudocode
-Step1 select some game as topic subject and build an array for the game name.
-Step2 render the buttons on the html with the game name fill in the text field of the buttons
-Step3 formated a url accroding to giphy documentation, using the game name as variable.
-Step4 call ajax link based on the url
-Step5 inside the ajax call, process through those returned 10 objects
-Step6 grab the img's url for still img and animated gif, the rating of the img and the title of the img maybe
-Step7 render the html with a "for" loop, and render each frame of the gif object returned.
-Step8 be sure to clear the html before ppl click another button
-Step9 build a form in the html using bootstrap form
-Step10 capture the form input value from the user input, push the value of string to the gameName[], and append another button to the button session of the page
-Step11 when user click their own button,start ajax call according to user's input button
-*/
+
 
 var gameArray = ["Beyond Two Souls", "Dark Souls 3", "Monster Hunter: World", "Detroit: Become Human", "Mass Effect 3", "Destiny 2"];
 // adding the following code to enable user retrive user added game names saved on local storage.
@@ -48,10 +34,10 @@ function renderImg(obj){
     for(var i =0; i<obj.data.length; i++ ){
         // console.log(obj.data[i].images.original_still.url);
         var imgRatio = obj.data[i].images.original_still.width/obj.data[i].images.original_still.height;
-        console.log(imgRatio);
+        // console.log(imgRatio);
         // adding this to filter out the image that has ratio not fit the layout
         if(imgRatio<2.3&& imgRatio>1.4 && obj.data[i].images.original_still.width >200){    
-            console.log("right size");
+            // console.log("right size");
             var newDiv =$("<div>").attr("class","imgWrap jumbotron col-md-3 col-sm-4 col-xs-6");
             var newImg = $("<img>").attr("src", obj.data[i].images.original_still.url);
             newImg.attr("class","images");
@@ -69,18 +55,20 @@ function renderImg(obj){
 
 //define a variable to capture user click and store button's value into the var
 var currentQueryVar;
-$(document).on("click", ".buttons", function(){
-    currentQueryVar = $(this).val();
+$(document).on("click", "#searchButton", function(event){
+    event.preventDefault();
+
+    currentQueryVar = $("#searchField").val();
     console.log(currentQueryVar);
-    var currentURL = "https://api.giphy.com/v1/gifs/search?q=" + currentQueryVar +"&api_key=dc6zaTOxFJmzC&limit=17";
+    var currentURL = "https://maps.googleapis.com/maps/api/geocode/json?address=" + currentQueryVar +"key=AIzaSyBGnYxlsr-8atPpbWbMsM2crsD-kah9JAI";
 
     $.ajax({
         url:currentURL,
         method: "GET"
     }).then(function(response){
         console.log(response);
-    
-        renderImg(response);
+        $("#contentContainer").text(JSON.stringify(response));
+        // renderImg(response);
     });
 });
 
@@ -119,16 +107,4 @@ $("#add-game").on("click", function(event) {
     }
     //Render the new Button
     $("#game-input").val("");
-});
-
-// $("#game-input").on("change",function(){
-//     var game = $("#game-input").val().trim();
-//     // The game from the textbox is then added to gameArray
-//     if(game!= ''){
-//         gameArray.push(game);
-//     }
-//     //Render the new Button
-//     renderUserButton(game);
-//     $("#game-input").val("");
-//     console.log(gameArray);
-// })
+})
