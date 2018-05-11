@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <lang="en-us">
+
+        <meta charset="UTF-8">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Urban Explorer</title>
+        <!-- Added link to the bootstrap -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/css/style.css">
+        <!-- Added link to the jQuery Library -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <div class="row" >
+        <nav class="navbar-brand bg-dark col-md-4 offset-md-4" id = "brand">
+            <img src ="assets/images/sitelogo-invert.png" alt ="site logo">
+        </nav>
+    </div>
+    <div class="row" id="landing-filler-top">
+
+        <div  class= "col-md-12 col-sm-12 ">
+
+        </div>
+    </div>
+    <div class="container">
+        <div class="row" >
+            <!-- <div class="jumbotron col-md-9 col-sm-6" id = "buttonGroup"> -->
+            <!-- </div> -->
+            <div class="jumbotron col-md-4 col-sm-4 landing-filler" > 
+            </div>
+            <div class="jumbotron col-md-4 col-sm-4 landing-filler" >
+                <form id = "myform" class="form-inline">
+                    <input class="form-control mr-sm-2" type="search" id = "searchField" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-light my-2 my-sm-0" id = "searchButton" type="submit">Search</button>
+                </form>
+            </div>
+            <div class="jumbotron col-md-4 col-sm-4 landing-filler" >
+            </div>
+            <!-- <form class="jumbotron col-md-12 col-sm-6" id="game-form">
+                <input type="text" id="game-input" value=""><br>
+                <input  id="add-game" type="submit" class="badge badge-pill badge-secondary" value="Add a game">
+            </form> -->
+            
+        </div>
+        <div class="row" id="contentContainer">
+        </div>
+        <div class="row" id="foodButton Wrapper">
+            <img class ="imgButtons" data-type = "vegan" src = "assets/images/foodIcons.png" alt = "imageButtons">
+        </div>
+
+        <!-- create table to hold list of places -->
+        
+        <table class="table table-striped table-dark">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name of Place</th>
+                <th scope="col">Address</th>
+                <th scope="col">Phone Number</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Cafe</td>
+                <td>Nob Hill</td>
+                <td>555-5555</td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>Restaurant</td>
+                <td>SOMA</td>
+                <td>555-5555</td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td>Ice Cream Shop</td>
+                <td>Sunset</td>
+                <td>555-5555</td>
+              </tr>
+            </tbody>
+          </table>
+
+
+    </div>
+
+    <!-- <footer class="footer ">copyright kittykuma.com</footer> -->
+
+    <!--make sure to put javascript on the bottom to alter the DOM, otherwise DOM not defined, can't alter DOM content with js method or function-->
+    <!-- <script src="assets/javascript/urbanExplorerApp.js"></script> -->
+    <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+    
+
+</body>
+
+</html>
