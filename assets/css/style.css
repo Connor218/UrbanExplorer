@@ -46,10 +46,13 @@ h4{
     color:rgb(210, 210, 210);
 }
 .imgButtons{
-
-    max-height: 180px;
+    max-height: 150px;
     display: block; 
-
+}
+.imgWrap{
+    max-height: 170px;
+    max-width: 170px;
+    /* display: block;  */
 }
 
 .images{
@@ -58,7 +61,6 @@ h4{
     float:left;
     margin-left: auto; 
     margin-right: auto; 
-    display: block; 
 }
 
 .footer{
