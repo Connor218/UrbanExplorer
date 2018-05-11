@@ -64,9 +64,17 @@ $(document).on("click", "#searchButton", function(event){
         url:currentURL,
         method: "GET"
     }).then(function(response){
+        //log full response
         console.log(response);
         // $("#contentContainer").text(JSON.stringify(response));
         // renderImg(response);
+        //formated address
+        console.log("the formatted address is: " + response.results[0].formatted_address)
+        //address component
+        var addressGeometryLat = response.results[0].geometry.location.lat
+        console.log("the geometry of location latitude is: " + response.results[0].geometry.location.lat)
+        var addressGeometryLong = response.results[0].geometry.location.lng
+        console.log("the geometry of location longitude is: " + response.results[0].geometry.location.lng)
     });
 });
 
