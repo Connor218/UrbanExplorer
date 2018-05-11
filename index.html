@@ -34,7 +34,7 @@
             <div class="jumbotron col-md-4 col-sm-4 landing-filler" > 
             </div>
             <div class="jumbotron col-md-4 col-sm-4 landing-filler" >
-                <form class="form-inline">
+                <form id = "myform" class="form-inline">
                     <input class="form-control mr-sm-2" type="search" id = "searchField" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-light my-2 my-sm-0" id = "searchButton" type="submit">Search</button>
                 </form>
@@ -48,15 +48,18 @@
             
         </div>
         <div class="row" id="contentContainer">
-
-        </div>  
-
+        </div>
+        <div class="row" id="foodButton Wrapper">
+            <img class ="imgButtons" data-type = "vegan" src = "assets/images/foodIcons.png" alt = "imageButtons">
+        </div>
     </div>
 
     <!-- <footer class="footer ">copyright kittykuma.com</footer> -->
 
     <!--make sure to put javascript on the bottom to alter the DOM, otherwise DOM not defined, can't alter DOM content with js method or function-->
-    <script src="assets/javascript/urbanExplorerApp.js"></script>
+    <!-- <script src="assets/javascript/urbanExplorerApp.js"></script> -->
+    <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+    
 
 </body>
 

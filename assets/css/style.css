@@ -45,18 +45,13 @@ h4{
     font-size:1.7em ;
     color:rgb(210, 210, 210);
 }
-.badge{
-    color:rgb(210, 210, 210);
-    background-color: rgb(75, 75, 75);
-    border:1px solid rgb(126, 126, 126);
-    box-shadow: 0.1em 0.1em rgb(220, 220, 220);
-    margin : 0 0.3em;
+.imgButtons{
+
+    max-height: 180px;
+    display: block; 
 
 }
-.badge:empty{
-    display:block;
-    margin-top:0.3em;
-}
+
 .images{
     max-block-size: 200px;
     max-width: 230px;
