@@ -82,16 +82,26 @@ $(document).on("click", ".imgButtons", function(){
     console.log(foodQueryVar);
 
 
-    var currentURL = "http://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+lat+","+lon+"&radius=3000&type=restaurant&keyword="+foodQueryVar+ "&key=AIzaSyBGnYxlsr-8atPpbWbMsM2crsD-kah9JAI";
+    var currentURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+lat+","+lon+"&radius=3000&type=restaurant&keyword="+foodQueryVar+ "&key=AIzaSyBGnYxlsr-8atPpbWbMsM2crsD-kah9JAI";
 //query example https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=37.4228775,-122.085133&radius=3000&type=restaurant&keyword=vegan&key=AIzaSyBGnYxlsr-8atPpbWbMsM2crsD-kah9JAI
     console.log(currentURL);
     $.ajax({
         url:currentURL,
+        // crossDomain: true,
+        // dataType: 'jsonp',
+        headers: { 'Access-Control-Allow-Origin' : '*'},
+        // headers: {  'Access-Control-Allow-Origin': 'https://site allowed to access' },
+        // data:{
+        //     q:"select title,abstract",
+        //     format:"json",
+        // },
+        // jsonp:"callback",
         method: "GET"
     }).then(function(response){
-        console.log(response);
+        console.log(response.results[0].geometry.location.lat);
+        // console.log(response);
+        // response.results[0].geometry.location.lat
         // $("#contentContainer").text(JSON.stringify(response));
-        // renderImg(response);
     });
 });
 

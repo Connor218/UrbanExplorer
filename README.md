@@ -16,9 +16,9 @@ In this project, we will be using google place and geo api to create sth for tra
 ## Installation
 Download the zip file, unzip on the desktop, open index.html
 
-## Link to the site
-[Click me](https://)
 
+
+https://github.com/kittyshen
 
 ## License
 Standard MIT License
