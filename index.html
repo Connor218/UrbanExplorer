@@ -34,8 +34,8 @@
             <div class="jumbotron col-md-4 col-sm-4 landing-filler" > 
             </div>
             <div class="jumbotron col-md-4 col-sm-4 landing-filler" >
-                <form id = "myform" class="form-inline">
-                    <input class="form-control mr-sm-2" type="search" id = "searchField" placeholder="Search" aria-label="Search">
+                <form class="form-inline">
+                    <input class="form-control mr-sm-2" type="search" id= "searchField" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-light my-2 my-sm-0" id = "searchButton" type="submit">Search</button>
                 </form>
             </div>
@@ -48,16 +48,54 @@
             
         </div>
         <div class="row" id="contentContainer">
+
+            <table class="table table-striped table-dark">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name of Place</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Phone Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Cafe</td>
+                        <td>Nob Hill</td>
+                        <td>555-5555</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Restaurant</td>
+                        <td>SOMA</td>
+                        <td>555-5555</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Ice Cream Shop</td>
+                        <td>Sunset</td>
+                        <td>555-5555</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="row" id="foodButton Wrapper">
-            <img class ="imgButtons" data-type = "vegan" src = "assets/images/foodIcons.png" alt = "imageButtons">
+        <div class="row" id="foodButtonWrapper">
+            <!-- <img class ="imgButtons" data-type = "vegan" src = "assets/images/foodIcons.png" alt = "imageButtons"> -->
         </div>
+
+        <!-- create table to hold list of places -->
+
+
+
     </div>
 
     <!-- <footer class="footer ">copyright kittykuma.com</footer> -->
 
     <!--make sure to put javascript on the bottom to alter the DOM, otherwise DOM not defined, can't alter DOM content with js method or function-->
     <!-- <script src="assets/javascript/urbanExplorerApp.js"></script> -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGnYxlsr-8atPpbWbMsM2crsD-kah9JAI&libraries=places"></script>
+
     <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
     <script src="assets/javascript/urbanExplorerApp.js"></script>
 
