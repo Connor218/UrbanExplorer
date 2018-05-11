@@ -1,4 +1,4 @@
-var gameArray = ["Beyond Two Souls", "Dark Souls 3", "Monster Hunter: World", "Detroit: Become Human", "Mass Effect 3", "Destiny 2"];
+var foodArray = ["drink", "coffee", "fastfood", "vegan", "asia", "steak"];
 // adding the following code to enable user retrive user added game names saved on local storage.
 console.log(localStorage.getItem("gameArrayInStorage"));
 if(JSON.parse(localStorage.getItem("gameArrayInStorage")) != null){
