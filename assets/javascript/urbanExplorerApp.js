@@ -70,11 +70,14 @@ $(document).on("click", "#searchButton", function(event){
         // renderImg(response);
         //formated address
         console.log("the formatted address is: " + response.results[0].formatted_address)
-        //address component
+        //address geometry
         var addressGeometryLat = response.results[0].geometry.location.lat
         console.log("the geometry of location latitude is: " + response.results[0].geometry.location.lat)
         var addressGeometryLong = response.results[0].geometry.location.lng
         console.log("the geometry of location longitude is: " + response.results[0].geometry.location.lng)
+        //we are going to use the cityName variable to use in weather API AJAX
+        var cityName = response.results[0].address_components[3].long_name
+        console.log("the name of the city is: " + response.results[0].address_components[3].long_name)
     });
 });
 
