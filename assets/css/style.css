@@ -58,6 +58,7 @@ h4{
     float:left;
     margin-left: auto; 
     margin-right: auto; 
+    display: block; 
 }
 
 .footer{
