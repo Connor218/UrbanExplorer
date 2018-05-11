@@ -1,5 +1,3 @@
-
-
 var gameArray = ["Beyond Two Souls", "Dark Souls 3", "Monster Hunter: World", "Detroit: Become Human", "Mass Effect 3", "Destiny 2"];
 // adding the following code to enable user retrive user added game names saved on local storage.
 console.log(localStorage.getItem("gameArrayInStorage"));
@@ -67,19 +65,45 @@ $(document).on("click", "#searchButton", function(event){
         method: "GET"
     }).then(function(response){
         console.log(response);
-        $("#contentContainer").text(JSON.stringify(response));
+        // $("#contentContainer").text(JSON.stringify(response));
         // renderImg(response);
     });
 });
 
-// render first page with some default content
-var defaultURL = "https://api.giphy.com/v1/gifs/search?q=" + gameArray[2] + "&api_key=dc6zaTOxFJmzC&limit=15"
-$.ajax({
-    url:defaultURL,
-    method: "GET"
-}).then(function(response){
-    renderImg(response);
+//user click the imgButtons calling google place api
+
+var foodQueryVar;
+var lat =37.4228775;  // need to pass in those parameters by parsing data from google geo coding api
+var lon = -122.085133;      // for now testing purpose just assign some value
+$(document).on("click", ".imgButtons", function(){
+
+    foodQueryVar = $(this).attr("data-type");
+    console.log(foodQueryVar);
+
+
+    var currentURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+lat+","+lon+"&radius=3000&type=restaurant&keyword="+foodQueryVar+ "&key=AIzaSyBGnYxlsr-8atPpbWbMsM2crsD-kah9JAI";
+//query example https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=37.4228775,-122.085133&radius=3000&type=restaurant&keyword=vegan&key=AIzaSyBGnYxlsr-8atPpbWbMsM2crsD-kah9JAI
+    console.log(currentURL);
+    $.ajax({
+        url:currentURL,
+        // crossDomain: true,
+        // dataType: 'jsonp',
+        headers: { 'Access-Control-Allow-Origin' : '*'},
+        // headers: {  'Access-Control-Allow-Origin': 'https://site allowed to access' },
+        // data:{
+        //     q:"select title,abstract",
+        //     format:"json",
+        // },
+        // jsonp:"callback",
+        method: "GET"
+    }).then(function(response){
+        console.log(response.results[0].geometry.location.lat);
+        // console.log(response);
+        // response.results[0].geometry.location.lat
+        // $("#contentContainer").text(JSON.stringify(response));
+    });
 });
+
 
 // change image src after click event happening on the images
 $(document).on("click",".images",function(){
