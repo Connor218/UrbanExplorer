@@ -17,10 +17,10 @@ In this project, we will be using google place and geo api to create sth for tra
 Download the zip file, unzip on the desktop, open index.html
 
 ## Author 
-[Linh Tong ](https://github.com/linhthitong)
-[Sara Khosravinasr ](https://github.com/saranasr83)
-[Connor Barnett ](https://github.com/Connor218/)
-[Kitty Shen ](https://github.com/kittyshen)
+*[Linh Tong ](https://github.com/linhthitong)
+*[Sara Khosravinasr ](https://github.com/saranasr83)
+*[Connor Barnett ](https://github.com/Connor218/)
+*[Kitty Shen ](https://github.com/kittyshen)
 
 ## License
 Standard MIT License
