@@ -17,8 +17,6 @@ function renderButtons(arr){             // create a function to render current 
         buttonHooker.append(newDiv);
     }
 }
-renderButtons(foodArray);   //render game array button to html page
-
 
 //define a variable to capture user click and store button's value into the var
 var currentQueryVar;
@@ -28,7 +26,7 @@ $(document).on("click", "#searchButton", function(event){
     currentQueryVar = $("#searchField").val();
     console.log(currentQueryVar);
     var currentURL = "https://maps.googleapis.com/maps/api/geocode/json?address=" + currentQueryVar +"key=AIzaSyBGnYxlsr-8atPpbWbMsM2crsD-kah9JAI";
-
+    //*************  Google Geo API ***************
     $.ajax({
         url:currentURL,
         method: "GET"
@@ -38,7 +36,7 @@ $(document).on("click", "#searchButton", function(event){
         // $("#contentContainer").text(JSON.stringify(response));
 
         //formated address
-        console.log("the formatted address is: " + response.results[0].formatted_address)
+        // console.log("the formatted address is: " + response.results[0].formatted_address)
         //address geometry
         var addressGeometryLat = response.results[0].geometry.location.lat
         console.log("the geometry of location latitude is: " + response.results[0].geometry.location.lat)
@@ -47,6 +45,49 @@ $(document).on("click", "#searchButton", function(event){
         //we are going to use the cityName variable to use in weather API AJAX
         var cityName = response.results[0].address_components[3].long_name
         console.log("the name of the city is: " + response.results[0].address_components[3].long_name)
+    
+        //call weather api to extract weather information using cityname as parameter
+        var APIKey = "ae1eea3fe56f73fb07fdc6e4480bc31b";
+        // Here we are building the URL we need to query the database passing th cityName from geoapi call to this inner ajax call
+        var queryURL = "https://api.openweathermap.org/data/2.5/weather?" +
+          "q="+cityName+"&units=imperial&appid=" + APIKey;
+
+
+        //*************  OpenWeatherMap API ***************
+        // Here we run our AJAX call to the OpenWeatherMap API
+        $.ajax({
+          url: queryURL,
+          method: "GET"
+        }).then(function(response) {
+            // Log the queryURL
+            console.log(queryURL);
+            // Log the resulting object
+            console.log(response);
+            // Transfer content to HTML
+            var weatherHooker = $("#cityWeather"); // get hold of the cityweaher class container prepare to append to this div
+            weatherHooker.empty();  // empty the contents inside this container to avoid overlapping append
+            var newCity = $("<div>").attr("class", "city text-center");  // create city div
+            var newTemp = $("<div>").attr("class", "temp text-center");    // create temp div
+            var newThermo = $("<img>").attr("src", "assets/images/thermo.png");
+            newThermo.attr("width","25px");
+            newTemp.append(newThermo);
+            weatherHooker.append(newCity,newTemp);
+
+
+            $(".city").html("<h5>" + response.name + " Weather </h5>");
+            // $(".wind").text("Wind Speed: " + response.wind.speed);
+            // $(".humidity").text("Humidity: " + response.main.humidity);
+            $(".temp").prepend($("<span>").text("Temperature (F) " + response.main.temp));
+            // Log the data in the console as well
+            // console.log("Wind Speed: " + response.wind.speed);
+            // console.log("Humidity: " + response.main.humidity);
+            // console.log("Temperature (F): " + response.main.temp);
+          });
+        //*************  OpenWeatherMap API ends here ***************
+
+        // Render food type buttons to allow user to choose food
+        renderButtons(foodArray);   //render food array button to html page
+
     });
 });
 
