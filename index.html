@@ -22,72 +22,14 @@
         </nav>
     </div>
 
-
-<!-- Retrieved data will be dumped here -->
-  
-<div class="container">
-    <!-- Content here -->
-   
-    <div class="col-sm-6">
-      <div class="well text-center">
-        <div>
-          <img id="cityWeather" src="assets/images/weather.png" width="100px">
-        </div>
-        <div class="city"></div>
-        <div class="temp"></div>
-      </div>
+    <!-- Retrieved Weather display data will be displayed here  -->
+    <div class="container" id = "cityWeather" >
+        <!-- Weather Content here -->
     </div>
-        
-    <!-- <div class="wind"></div> -->
-    <!-- <div class="humidity"></div> -->
-    
-  </div>
-    
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script type="text/javascript">
-    // This is our API key
-    var APIKey = "ae1eea3fe56f73fb07fdc6e4480bc31b";
-
-    // Here we are building the URL we need to query the database
-    var queryURL = "https://api.openweathermap.org/data/2.5/weather?" +
-      "q=belmont&units=imperial&appid=" + APIKey;
-
-    // Here we run our AJAX call to the OpenWeatherMap API
-    $.ajax({
-      url: queryURL,
-      method: "GET"
-    })
-      // We store all of the retrieved data inside of an object called "response"
-      .then(function(response) {
-
-        // Log the queryURL
-        console.log(queryURL);
-
-        // Log the resulting object
-        console.log(response);
-
-        // Transfer content to HTML
-        $(".city").html("<h5>" + response.name + " Weather </h5>");
-        // $(".wind").text("Wind Speed: " + response.wind.speed);
-        // $(".humidity").text("Humidity: " + response.main.humidity);
-        $(".temp").text("Temperature (F) " + response.main.temp);
-
-        // Log the data in the console as well
-        console.log("Wind Speed: " + response.wind.speed);
-        console.log("Humidity: " + response.main.humidity);
-        console.log("Temperature (F): " + response.main.temp);
-      });
-  </script>
-
-
-
-
 
     <div class="row" id="landing-filler-top">
-
-        <div  class= "col-md-12 col-sm-12 "></div>
-
-        
+      <div  class= "col-md-12 col-sm-12 ">
+      </div>
     </div>
     <div class="container">
         <div class="row" >
@@ -109,9 +51,12 @@
             </form> -->
             
         </div>
+        
+        <!-- MOST Important hidden div to the place api to work don't delete all the time-->
+        <div id="map"></div>
+
         <div class="row" id="contentContainer">
-            <div id="map"></div>
-            <table class="table table-striped table-dark">
+            <!-- <table class="table table-striped table-dark">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -140,7 +85,7 @@
                         <td>555-5555</td>
                     </tr>
                 </tbody>
-            </table>
+            </table> -->
         </div>
         <div class="row" id="foodButtonWrapper">
             <!-- <img class ="imgButtons" data-type = "vegan" src = "assets/images/foodIcons.png" alt = "imageButtons"> -->
