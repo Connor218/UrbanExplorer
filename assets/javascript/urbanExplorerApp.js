@@ -1,5 +1,8 @@
-var foodArray = ["drink", "coffee", "fastfood", "vegan", "asia", "steak"];
+var foodArray = ["drink", "coffee", "fastfood", "vegan", "asian", "steak"];
 var foodIconArray =["assets/images/00.png","assets/images/01.png","assets/images/02.png","assets/images/03.png","assets/images/04.png","assets/images/05.png"];
+var addressGeometryLat = 0;
+var addressGeometryLong = 0;
+var cityName;
 
 var buttonHooker = $("#foodButtonWrapper");  // create a variable to hook all buttons ad future user input append
 
@@ -11,6 +14,9 @@ function renderButtons(arr){             // create a function to render current 
         newImg.attr("class","imgButtons");
         // newImg.attr("data-hover",foodIconArrayHover[i]);
         newImg.attr("data-foodtype",foodArray[i]);
+        
+        newImg.attr("data-foodindex",i);        // added
+
         var newP = $("<p>").text(foodArray[i]);
         newP.attr("class","text-center");
         newDiv.append(newImg,newP);
@@ -38,12 +44,12 @@ $(document).on("click", "#searchButton", function(event){
         //formated address
         // console.log("the formatted address is: " + response.results[0].formatted_address)
         //address geometry
-        var addressGeometryLat = response.results[0].geometry.location.lat
+        addressGeometryLat = response.results[0].geometry.location.lat
         console.log("the geometry of location latitude is: " + response.results[0].geometry.location.lat)
-        var addressGeometryLong = response.results[0].geometry.location.lng
+        addressGeometryLong = response.results[0].geometry.location.lng
         console.log("the geometry of location longitude is: " + response.results[0].geometry.location.lng)
         //we are going to use the cityName variable to use in weather API AJAX
-        var cityName = response.results[0].address_components[3].long_name
+        cityName = response.results[0].address_components[3].long_name
         console.log("the name of the city is: " + response.results[0].address_components[3].long_name)
     
         //call weather api to extract weather information using cityname as parameter
@@ -84,12 +90,14 @@ $(document).on("click", "#searchButton", function(event){
             // console.log("Temperature (F): " + response.main.temp);
           });
         //*************  OpenWeatherMap API ends here ***************
-
         // Render food type buttons to allow user to choose food
+        $("#foodButtonWrapper").empty();
         renderButtons(foodArray);   //render food array button to html page
 
     });
 });
+        renderButtons(foodArray);   //for debug testing use, delete before publish render food array button to html page
+
 
 //user click the imgButtons calling google place api
 
@@ -97,8 +105,8 @@ $(document).on("click", "#searchButton", function(event){
 var map;
 // var infowindow;
 
-function initMap() {
-  var pyrmont = {lat: 37.4228775, lng: -122.085133};
+function initMap(someVar) {    // fill the the blank to pass some variable here
+  var pyrmont = {lat: 37.4228775, lng: -122.085133};  //fill the the blank where to pass addressGeometryLat addressGeometryLong?
 
   map = new google.maps.Map(document.getElementById('map'), {
     center: pyrmont,
@@ -111,24 +119,30 @@ function initMap() {
     location: pyrmont,
     radius: 3500,
     type: ['restaurant'],
-    keyword:'steak',
+    keyword:'steak',  //fill in the the blank where to use someVar??
   }, callback);
 }
 
 
 function callback(results, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
+    $("#contentContainer").empty();  // empty out the table area in a new circle
+    renderTableHeader();  //render table data
     for (var i = 0; i < results.length; i++) {
-        var place = results[i];
-        console.log(place.name);
+        var place = results[i];  //travese through a list of returned restaurant objects
+        console.log(place.name); //restaurant name
         // console.log(place.place_id);
-        console.log(place.rating);
-        console.log(place.vicinity);
-        console.log("lat = " +place.geometry.location.lat());
-        console.log("lon = " +place.geometry.location.lng());
-        var types = String(place.types);
-        types = types.split(",");
-        console.log(types[0]);
+        console.log(place.rating);      //restaurant rating
+        console.log(place.vicinity);    //restaurant address
+        console.log("lat = " +place.geometry.location.lat());   //restaurant lat info
+        console.log("lon = " +place.geometry.location.lng());   //restaurant long info
+        console.log("Open? "+place.opening_hours.open_now);  //restaurant still opening or not
+
+        // var types = String(place.types);
+        // types = types.split(",");
+        // console.log(types[0]);
+        renderTableData(i+1, place.name, place.vicinity,"not sure yet", place.rating, place.opening_hours.open_now);
+
     }
   }
 }
@@ -138,12 +152,48 @@ function callback(results, status) {
 //user click the imgButtons calling google place api
 
 var foodQueryVar;
-var lat =37.4228775;  // need to pass in those parameters by parsing data from google geo coding api
-var lon = -122.085133;      // for now testing purpose just assign some value
+
 $(document).on("click", ".imgButtons", function(){
 
-    foodQueryVar = $(this).attr("data-type");
+    foodQueryVar = $(this).attr("data-foodtype");
     console.log(foodQueryVar);
-    initMap();
+    initMap();  // fill in the blank what should go inside initMap function?
 
 });
+
+
+//deal with hover effect 
+// reference link https://www.w3schools.com/jquery/event_hover.asp
+$(document).on("mouseover", ".imgButtons", function(){
+    $(this).hover(function(){$(this).attr("src","assets/images/0"+$(this).attr("data-foodindex") +"i.png")},
+                  function(){ "..."});  //fill in the blank here, what should be inside the outer function?
+
+});
+
+// separate table header render from tbody data.
+
+function renderTableHeader(){
+    var tableHooker = $("#contentContainer");
+    var table = $("<table>").attr("class","table table-striped table-dark");
+    var thead = $("<thead>").html("<tr><th scope=\"col\"></th><th scope=\"col\">Name of Place</th><th scope=\"col\">Address</th><th scope=\"col\">Appx Distance (Miles)</th><th scope=\"col\">Rating (Max 5.0)</th><th scope=\"col\">Open</th></tr>");
+    var tbody = $("<tbody>").attr("id","table-content"); // define tbody id hooker to make future data append easier
+    table.append(thead,tbody);
+    tableHooker.append(table);
+}
+
+// define a recallable table body render to fill in the table data
+function renderTableData(a,b,c,d,e,f){
+    var tableContentHooker = $("#table-content");
+    var tdata = $("<tr>").html("fill in here ");        //fill in the blank using linh's table and line 178 as reference point 
+                    // <tr>
+                    //     <th scope="row">1</th>
+                    //     <td>Cafe</td>
+                    //     <td>Nob Hill</td>
+                    //     <td>555-5555</td>
+                    //     <td>Nob Hill</td>
+                    //     <td>555-5555</td>
+                    // </tr>
+
+    tableContentHooker.append(tdata);
+
+}
