@@ -150,6 +150,11 @@ h4{
     opacity: 0.8;
 }
 .btn{
-    background-color: rgb(212, 139, 2);
+    background-color: rgb(255, 145, 59);
     color: black;
+}
+.text-center{
+    color:black;
+    font-weight: bolder;
+    font-size: 20px;
 }
