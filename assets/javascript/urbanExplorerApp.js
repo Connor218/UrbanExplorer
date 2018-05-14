@@ -57,17 +57,19 @@ $("#myform").submit(function (event) {
 //and a row in html when a user adds an entry
 // database.ref().on("child_added", function (childSnapshot) {
 //     console.log(childSnapshot.val());
-    // Store everything into a variable.
-    // var userInputAddress = childSnapshot.val().inputAddress;
+// Store everything into a variable.
+// var userInputAddress = childSnapshot.val().inputAddress;
 // });
 
 //define a variable to capture user click and store button's value into the var
 var currentQueryVar;
 $(document).on("click", "#searchButton", function (event) {
     event.preventDefault();
+    //change the logo location on click
+    $("#demo").css("margin-left", "+=-350");
 
     currentQueryVar = $("#searchField").val();
-    console.log(currentQueryVar);
+    //console.log(currentQueryVar);
     var currentURL = "https://maps.googleapis.com/maps/api/geocode/json?address=" + currentQueryVar + "key=AIzaSyBGnYxlsr-8atPpbWbMsM2crsD-kah9JAI";
     //*************  Google Geo API ***************
     $.ajax({
@@ -112,7 +114,7 @@ $(document).on("click", "#searchButton", function (event) {
             var newCity = $("<div>").attr("class", "city text-center");  // create city div
             var newTemp = $("<div>").attr("class", "temp text-center");    // create temp div
             var newThermo = $("<img>").attr("src", "assets/images/thermo.png");
-            newThermo.attr("width", "25px");
+            newThermo.attr("width", "45px");
             newTemp.append(newThermo);
             weatherHooker.append(newCity, newTemp);
 
