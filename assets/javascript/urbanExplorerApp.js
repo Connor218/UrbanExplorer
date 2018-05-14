@@ -45,17 +45,28 @@ $(document).ready(function () {
     //     event.preventDefault();
 
     // });
+    $("#searchButton").one("click", function () {
+        //change the logo location on click
+        $("#demo").css("margin-left", "+=-350");
+        // $("#addressbox").css("margin-top", "+=-205px");
+        // $("#addressbox").css("margin-right", "+=-1244px");
+       
+    });
 
 
     //define a variable to capture user click and store button's value into the var
     // var currentQueryVar;
     $(document).on("click", "#searchButton", function (event) {
         event.preventDefault();
+        $("#contentContainer").empty(); 
+        //starting here to update the logo and weather position
+        //move the log to the top left corner
+        $("#futureLogo").html("<img src =\"assets/images/sitelogo-invert.png\" style = \"margin-left:2em;\"alt =\"site logo\">");
+        //delete the old logo
+        $("#Logo").empty();
+        //ending here update the logo and weather position
 
         $("#contentContainer").empty();  // empty out the table area when user clicks search
-
-        //     //change the logo location on click
-        $("#demo").css("margin-left", "+=-350");
 
         //function that replaces dots with spaces
         //console.log("reset address" + inputAddressValidation($("#searchField").val()));
@@ -165,8 +176,8 @@ $(document).ready(function () {
     var map;
     // var infowindow;
 
-    function initMap(someVar) {   
-        var pyrmont = { lat: addressGeometryLat, lng: addressGeometryLong }; 
+    function initMap(someVar) {
+        var pyrmont = { lat: addressGeometryLat, lng: addressGeometryLong };
 
         map = new google.maps.Map(document.getElementById('map'), {
             center: pyrmont,
@@ -179,7 +190,7 @@ $(document).ready(function () {
             location: pyrmont,
             radius: 3500,
             type: ['restaurant'],
-            keyword: someVar,  
+            keyword: someVar,
         }, callback);
     }
 
@@ -222,17 +233,24 @@ $(document).ready(function () {
     $(document).on("click", ".imgButtons", function () {
 
         foodQueryVar = $(this).attr("data-foodtype");
-        console.log(foodQueryVar);
+        // console.log(foodQueryVar);
         initMap(foodQueryVar);
 
     });
 
+    $(document).one("click", ".imgButtons", function(){  //sara found the one click feature
 
-    //deal with hover effect 
+        $("#landing-filler-top-wrapper").empty();
+        //Switch search bar location
+        $("#top-right-oneThird").html("<form class=\"form-inline\" id =\"myform\"> <input class=\"form-control mr-sm-2\" type=\"search\" id= \"searchField\" placeholder=\"Enter Address\" aria-label=\"Search\"><button class=\"btn btn-outline-light my-2 my-sm-0\" id = \"searchButton\" type=\"submit\">Search</button></form>");
+        $("#searchOriginal").html("");
+    });
+
+    //deal with hover effect            
     // reference link https://www.w3schools.com/jquery/event_hover.asp
     $(document).on("mouseover", ".imgButtons", function () {
         $(this).hover(function () { $(this).attr("src", "assets/images/0" + $(this).attr("data-foodindex") + "i.png") },
-            function () { $(this).attr("src", "assets/images/0" + $(this).attr("data-foodindex") + ".png")});
+                                    function () { $(this).attr("src", "assets/images/0" + $(this).attr("data-foodindex") + ".png") });
 
     });
 
@@ -250,7 +268,7 @@ $(document).ready(function () {
     // define a recallable table body render to fill in the table data
     function renderTableData(a, b, c, d, e, f) {
         var tableContentHooker = $("#table-content");
-        var tdata = $("<tr>").html("<td scope=\"col\">"+ a +"</td><td scope=\"col\">"+b+"</td><td scope=\"col\">"+c+"</td><td scope=\"col\">"+d+"</td><td scope=\"col\">"+e+"</td><td scope=\"col\">"+f+"</td>");    
+        var tdata = $("<tr>").html("<td scope=\"col\">" + a + "</td><td scope=\"col\">" + b + "</td><td scope=\"col\">" + c + "</td><td scope=\"col\">" + d + "</td><td scope=\"col\">" + e + "</td><td scope=\"col\">" + f + "</td>");
 
         tableContentHooker.append(tdata);
 
@@ -274,11 +292,11 @@ $(document).ready(function () {
         // DistanceDegree values are in latitude and longitude. Need to convert from degrees to miles. 68.703 represents 1 degree in miles
         // Calculating the hypotenuse of a right triangle
 
-    var zDistanceMiles = 68.703*(Math.sqrt((xDistanceDegree * xDistanceDegree) + (yDistanceDegree * yDistanceDegree)));
-    // console.log(zDistance);
-    zDistanceMiles = Math.round(zDistanceMiles * 10) / 10;
-    return zDistanceMiles;
-}
+        var zDistanceMiles = 68.703 * (Math.sqrt((xDistanceDegree * xDistanceDegree) + (yDistanceDegree * yDistanceDegree)));
+        // console.log(zDistance);
+        zDistanceMiles = Math.round(zDistanceMiles * 10) / 10;
+        return zDistanceMiles;
+    }
 
 
 });
