@@ -23,7 +23,8 @@ $(document).ready(function () {
 
     var buttonHooker = $("#foodButtonWrapper");  // create a variable to hook all buttons ad future user input append
 
-    function renderButtons(arr) {             // create a function to render current game array as  buttons
+    function renderButtons(arr) {  
+              // create a function to render current game array as  buttons
         for (var i = 0; i < arr.length; i++) {
 
             var newDiv = $("<div>").attr("class", "imgWrap jumbotron col-md-3 col-sm-4 col-xs-6");
@@ -185,7 +186,9 @@ $(document).ready(function () {
         if (status == google.maps.places.PlacesServiceStatus.OK) {
             $("#contentContainer").empty();  // empty out the table area in a new circle
             renderTableHeader();  //render table data
-            for (var i = 0; i < results.length; i++) {
+            var newIterration = results.length;
+            if  (newIterration> 10)   newIterration = 10 ; 
+            for (var i = 0; i < newIterration; i++) {
                 var place = results[i];  //travese through a list of returned restaurant objects
                 console.log(place.name); //restaurant name
                 // console.log(place.place_id);
