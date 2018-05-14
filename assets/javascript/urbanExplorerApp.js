@@ -1,5 +1,20 @@
 $(document).ready(function () {
 
+
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyCIccHJ6pBk5j_LX4oNadIhetMTSSKr0ps",
+        authDomain: "urbanexplorer-f961c.firebaseapp.com",
+        databaseURL: "https://urbanexplorer-f961c.firebaseio.com",
+        projectId: "urbanexplorer-f961c",
+        storageBucket: "urbanexplorer-f961c.appspot.com",
+        messagingSenderId: "919120165671"
+    };
+    firebase.initializeApp(config);
+
+    //a path to the database, it stores all the input data
+    var database = firebase.database();
+
     var foodArray = ["Night Life", "Coffee", "FastFood", "Vegan", "Asian", "Luxury"];
     var foodIconArray = ["assets/images/00.png", "assets/images/01.png", "assets/images/02.png", "assets/images/03.png", "assets/images/04.png", "assets/images/05.png"];
     var addressGeometryLat = 0;
@@ -28,57 +43,25 @@ $(document).ready(function () {
 
 
 
-    // Initialize Firebase
-    var config = {
-        apiKey: "AIzaSyCIccHJ6pBk5j_LX4oNadIhetMTSSKr0ps",
-        authDomain: "urbanexplorer-f961c.firebaseapp.com",
-        databaseURL: "https://urbanexplorer-f961c.firebaseio.com",
-        projectId: "urbanexplorer-f961c",
-        storageBucket: "urbanexplorer-f961c.appspot.com",
-        messagingSenderId: "919120165671"
-    };
-    firebase.initializeApp(config);
-    //    console.log("initialize firebase:", firebase.initializeApp(config));
+    // $("#myform").submit(function (event) {
+    //     event.preventDefault();
 
-    //a path to the database, it stores all the input data
-    var database = firebase.database();
+    // });
 
-    //take the input data(address) and push it to firebase database(button for adding address)
-    $("#myform").submit(function (event) {
-        event.preventDefault();
-        console.log("works");
-        //the value of user input
-        var userInputAddress = $("#searchField").val().trim()
-
-        //to empty the serach box
-        $("#searchField").val("");
-
-        //holding the address info/data in local object
-        //push(upload) our data to firebase every time the form gets submited with unique key
-        database.ref().push({
-            userInputAddress: userInputAddress
-
-        })
-    });
-    //(if we wanted to display address on the screen later on) create firebase event for adding address to the database 
-    //and a row in html when a user adds an entry
-    database.ref().on("child_added", function (childSnapshot) {
-        //console.log(childSnapshot.val());
-        // Store everything into a variable.
-        var userInputAddress = childSnapshot.val().inputAddress;
-    });
 
     //define a variable to capture user click and store button's value into the var
     // var currentQueryVar;
     $(document).on("click", "#searchButton", function (event) {
         event.preventDefault();
+
+
         //     //change the logo location on click
         $("#demo").css("margin-left", "+=-350");
-        
+
         //function that replaces dots with spaces
         //console.log("reset address" + inputAddressValidation($("#searchField").val()));
         inputAddressValidation($("#searchField").val());
-                  
+
 
         currentQueryVar = $("#searchField").val();
         //console.log(currentQueryVar);
@@ -146,6 +129,29 @@ $(document).ready(function () {
             $("#foodButtonWrapper").empty();
             renderButtons(foodArray);   //render food array button to html page
 
+            //take the input data(address) and push it to firebase database(button for adding address)
+
+            //the value of user input
+            var userInputAddress = $("#searchField").val().trim()
+
+            //to empty the serach box
+            $("#searchField").val("");
+
+            //holding the address info/data in local object
+            //push(upload) our data to firebase every time the form gets submited with unique key
+            database.ref().push({
+                userInputAddress: userInputAddress
+
+            }).then(function (data) {
+                console.log(data)
+            })
+            //(if we wanted to display address on the screen later on) create firebase event for adding address to the database 
+            //and a row in html when a user adds an entry
+            database.ref().on("child_added", function (childSnapshot) {
+                //console.log(childSnapshot.val());
+                // Store everything into a variable.
+                var userInputAddress = childSnapshot.val().inputAddress;
+            });
         });
     });
     renderButtons(foodArray);   //for debug testing use, delete before publish render food array button to html page
