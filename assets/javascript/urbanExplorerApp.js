@@ -1,5 +1,20 @@
 $(document).ready(function () {
 
+
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyCIccHJ6pBk5j_LX4oNadIhetMTSSKr0ps",
+        authDomain: "urbanexplorer-f961c.firebaseapp.com",
+        databaseURL: "https://urbanexplorer-f961c.firebaseio.com",
+        projectId: "urbanexplorer-f961c",
+        storageBucket: "urbanexplorer-f961c.appspot.com",
+        messagingSenderId: "919120165671"
+    };
+    firebase.initializeApp(config);
+
+    //a path to the database, it stores all the input data
+    var database = firebase.database();
+
     var foodArray = ["Night Life", "Coffee", "FastFood", "Vegan", "Asian", "Luxury"];
     var foodIconArray = ["assets/images/00.png", "assets/images/01.png", "assets/images/02.png", "assets/images/03.png", "assets/images/04.png", "assets/images/05.png"];
     var addressGeometryLat = 0;
@@ -26,53 +41,27 @@ $(document).ready(function () {
         }
     }
 
-    // Initialize Firebase
-    var config = {
-        apiKey: "AIzaSyCIccHJ6pBk5j_LX4oNadIhetMTSSKr0ps",
-        authDomain: "urbanexplorer-f961c.firebaseapp.com",
-        databaseURL: "https://urbanexplorer-f961c.firebaseio.com",
-        projectId: "urbanexplorer-f961c",
-        storageBucket: "urbanexplorer-f961c.appspot.com",
-        messagingSenderId: "919120165671"
-    };
-    firebase.initializeApp(config);
-    //    console.log("initialize firebase:", firebase.initializeApp(config));
 
-    //a path to the database, it stores all the input data
-    var database = firebase.database();
-    console.log("get database firebase:", database);
 
-    //take the input data(address) and push it to firebase database(button for adding address)
-    $("#myform").submit(function (event) {
-        event.preventDefault();
-        console.log("works");
-        //the value of user input
-        var userInputAddress = $("#searchField").val().trim()
+    // $("#myform").submit(function (event) {
+    //     event.preventDefault();
 
-        //to empty the serach box
-        $("#searchField").val("");
+    // });
 
-        //holding the address info/data in local object
-        //push(upload) our data to firebase every time the form gets submited with unique key
-        database.ref().push({
-            userInputAddress: userInputAddress
-
-        })
-    });
-    //(if we wanted to display address on the screen later on) create firebase event for adding address to the database 
-    //and a row in html when a user adds an entry
-    database.ref().on("child_added", function (childSnapshot) {
-        //console.log(childSnapshot.val());
-        // Store everything into a variable.
-        var userInputAddress = childSnapshot.val().inputAddress;
-    });
 
     //define a variable to capture user click and store button's value into the var
     // var currentQueryVar;
     $(document).on("click", "#searchButton", function (event) {
         event.preventDefault();
+
+
         //     //change the logo location on click
         $("#demo").css("margin-left", "+=-350");
+
+        //function that replaces dots with spaces
+        //console.log("reset address" + inputAddressValidation($("#searchField").val()));
+        inputAddressValidation($("#searchField").val());
+
 
         currentQueryVar = $("#searchField").val();
         //console.log(currentQueryVar);
@@ -84,18 +73,19 @@ $(document).ready(function () {
         }).then(function (response) {
             //log full response
             console.log(response);
+            console.log(currentURL);
             // $("#contentContainer").text(JSON.stringify(response));
 
             //formated address
             // console.log("the formatted address is: " + response.results[0].formatted_address)
             //address geometry
             addressGeometryLat = response.results[0].geometry.location.lat
-            console.log("the geometry of location latitude is: " + response.results[0].geometry.location.lat)
+            //console.log("the geometry of location latitude is: " + response.results[0].geometry.location.lat)
             addressGeometryLong = response.results[0].geometry.location.lng
-            console.log("the geometry of location longitude is: " + response.results[0].geometry.location.lng)
+            //console.log("the geometry of location longitude is: " + response.results[0].geometry.location.lng)
             //we are going to use the cityName variable to use in weather API AJAX
             cityName = response.results[0].address_components[3].long_name
-            console.log("the name of the city is: " + response.results[0].address_components[3].long_name)
+            //console.log("the name of the city is: " + response.results[0].address_components[3].long_name)
 
             //call weather api to extract weather information using cityname as parameter
             var APIKey = "ae1eea3fe56f73fb07fdc6e4480bc31b";
@@ -111,9 +101,9 @@ $(document).ready(function () {
                 method: "GET"
             }).then(function (response) {
                 // Log the queryURL
-                console.log(queryURL);
+                //console.log(queryURL);
                 // Log the resulting object
-                console.log(response);
+                //console.log(response);
                 // Transfer content to HTML
                 var weatherHooker = $("#cityWeather"); // get hold of the cityweaher class container prepare to append to this div
                 weatherHooker.empty();  // empty the contents inside this container to avoid overlapping append
@@ -139,6 +129,29 @@ $(document).ready(function () {
             $("#foodButtonWrapper").empty();
             renderButtons(foodArray);   //render food array button to html page
 
+            //take the input data(address) and push it to firebase database(button for adding address)
+
+            //the value of user input
+            var userInputAddress = $("#searchField").val().trim()
+
+            //to empty the serach box
+            $("#searchField").val("");
+
+            //holding the address info/data in local object
+            //push(upload) our data to firebase every time the form gets submited with unique key
+            database.ref().push({
+                userInputAddress: userInputAddress
+
+            }).then(function (data) {
+                console.log(data)
+            })
+            //(if we wanted to display address on the screen later on) create firebase event for adding address to the database 
+            //and a row in html when a user adds an entry
+            database.ref().on("child_added", function (childSnapshot) {
+                //console.log(childSnapshot.val());
+                // Store everything into a variable.
+                var userInputAddress = childSnapshot.val().inputAddress;
+            });
         });
     });
     renderButtons(foodArray);   //for debug testing use, delete before publish render food array button to html page
@@ -167,7 +180,6 @@ $(document).ready(function () {
             keyword: 'steak',  //fill in the the blank where to use someVar??
         }, callback);
     }
-
 
     function callback(results, status) {
         if (status == google.maps.places.PlacesServiceStatus.OK) {
@@ -243,10 +255,14 @@ $(document).ready(function () {
 
     }
 
+    // function that replaces dots with spaces
+    function inputAddressValidation(inputString) {
+        var dotReplacedInput = inputString.replace(/\./g, " ");
+        console.log("revised address is: ", dotReplacedInput);
+        return dotReplacedInput
+    }
 
 });
-
-
 // To calculate distance between two coordinates 
 function calcDistance(pointAx, pointAy, pointBx, pointBy) {
 
@@ -262,3 +278,9 @@ function calcDistance(pointAx, pointAy, pointBx, pointBy) {
 
     return zDistanceMiles
 }
+
+
+});
+
+
+
