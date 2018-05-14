@@ -41,23 +41,24 @@ $(document).ready(function () {
         }
     }
 
-
-
     // $("#myform").submit(function (event) {
     //     event.preventDefault();
 
     // });
+    $("#searchButton").one("click", function () {
+        //change the logo location on click
+        $("#demo").css("margin-left", "+=-350");
+        // $("#addressbox").css("margin-top", "+=-205px");
+        // $("#addressbox").css("margin-right", "+=-1244px");
+       
+    });
 
 
     //define a variable to capture user click and store button's value into the var
     // var currentQueryVar;
     $(document).on("click", "#searchButton", function (event) {
         event.preventDefault();
-
-
-        //     //change the logo location on click
-        $("#demo").css("margin-left", "+=-350");
-
+        $("#contentContainer").empty();
         //function that replaces dots with spaces
         //console.log("reset address" + inputAddressValidation($("#searchField").val()));
         inputAddressValidation($("#searchField").val());
@@ -135,7 +136,7 @@ $(document).ready(function () {
             var userInputAddress = $("#searchField").val().trim()
 
             //to empty the serach box
-            $("#searchField").val("");
+            // $("#searchField").val("");
 
             //holding the address info/data in local object
             //push(upload) our data to firebase every time the form gets submited with unique key
@@ -154,7 +155,7 @@ $(document).ready(function () {
             });
         });
     });
-    renderButtons(foodArray);   //for debug testing use, delete before publish render food array button to html page
+    // renderButtons(foodArray);   //for debug testing use, delete before publish render food array button to html page
 
 
     //user click the imgButtons calling google place api
@@ -163,8 +164,8 @@ $(document).ready(function () {
     var map;
     // var infowindow;
 
-    function initMap(someVar) {   
-        var pyrmont = { lat: addressGeometryLat, lng: addressGeometryLong }; 
+    function initMap(someVar) {
+        var pyrmont = { lat: addressGeometryLat, lng: addressGeometryLong };
 
         map = new google.maps.Map(document.getElementById('map'), {
             center: pyrmont,
@@ -177,7 +178,7 @@ $(document).ready(function () {
             location: pyrmont,
             radius: 3500,
             type: ['restaurant'],
-            keyword: someVar,  
+            keyword: someVar,
         }, callback);
     }
 
@@ -198,7 +199,7 @@ $(document).ready(function () {
                 // var types = String(place.types);
                 // types = types.split(",");
                 // console.log(types[0]);
-                renderTableData(i + 1, place.name, place.vicinity, calcDistance(place.geometry.location.lat(),place.geometry.location.lng(),addressGeometryLat, addressGeometryLong), place.rating, place.opening_hours.open_now);
+                renderTableData(i + 1, place.name, place.vicinity, calcDistance(place.geometry.location.lat(), place.geometry.location.lng(), addressGeometryLat, addressGeometryLong), place.rating, place.opening_hours.open_now);
 
             }
         }
@@ -213,17 +214,17 @@ $(document).ready(function () {
     $(document).on("click", ".imgButtons", function () {
 
         foodQueryVar = $(this).attr("data-foodtype");
-        console.log(foodQueryVar);
+        // console.log(foodQueryVar);
         initMap(foodQueryVar);
 
     });
 
 
-    //deal with hover effect 
+    //deal with hover effect            
     // reference link https://www.w3schools.com/jquery/event_hover.asp
     $(document).on("mouseover", ".imgButtons", function () {
         $(this).hover(function () { $(this).attr("src", "assets/images/0" + $(this).attr("data-foodindex") + "i.png") },
-            function () { $(this).attr("src", "assets/images/0" + $(this).attr("data-foodindex") + ".png")});
+                                    function () { $(this).attr("src", "assets/images/0" + $(this).attr("data-foodindex") + ".png") });
 
     });
 
@@ -241,7 +242,7 @@ $(document).ready(function () {
     // define a recallable table body render to fill in the table data
     function renderTableData(a, b, c, d, e, f) {
         var tableContentHooker = $("#table-content");
-        var tdata = $("<tr>").html("<td scope=\"col\">"+ a +"</td><td scope=\"col\">"+b+"</td><td scope=\"col\">"+c+"</td><td scope=\"col\">"+d+"</td><td scope=\"col\">"+e+"</td><td scope=\"col\">"+f+"</td>");    
+        var tdata = $("<tr>").html("<td scope=\"col\">" + a + "</td><td scope=\"col\">" + b + "</td><td scope=\"col\">" + c + "</td><td scope=\"col\">" + d + "</td><td scope=\"col\">" + e + "</td><td scope=\"col\">" + f + "</td>");
 
         tableContentHooker.append(tdata);
 
@@ -254,22 +255,22 @@ $(document).ready(function () {
         return dotReplacedInput
     }
 
-});
-// To calculate distance between two coordinates 
-function calcDistance(pointAx, pointAy, pointBx, pointBy) {
 
-    var xDistanceDegree = pointBx-pointAx 
-    var yDistanceDegree = pointBy-pointAy
-    // console.log(xDistance +" " + yDistance);
+    // To calculate distance between two coordinates 
+    function calcDistance(pointAx, pointAy, pointBx, pointBy) {
 
-    // DistanceDegree values are in latitude and longitude. Need to convert from degrees to miles. 68.703 represents 1 degree in miles
-    // Calculating the hypotenuse of a right triangle
+        var xDistanceDegree = pointBx - pointAx
+        var yDistanceDegree = pointBy - pointAy
+        // console.log(xDistance +" " + yDistance);
 
-    var zDistanceMiles = 68.703*(Math.sqrt((xDistanceDegree * xDistanceDegree) + (yDistanceDegree * yDistanceDegree)));
-    // console.log(zDistance);
-    zDistanceMiles = Math.round(zDistanceMiles * 10) / 10;
-    return zDistanceMiles;
-}
+        // DistanceDegree values are in latitude and longitude. Need to convert from degrees to miles. 68.703 represents 1 degree in miles
+        // Calculating the hypotenuse of a right triangle
+
+        var zDistanceMiles = 68.703 * (Math.sqrt((xDistanceDegree * xDistanceDegree) + (yDistanceDegree * yDistanceDegree)));
+        // console.log(zDistance);
+        zDistanceMiles = Math.round(zDistanceMiles * 10) / 10;
+        return zDistanceMiles;
+    }
 
 
 });
