@@ -150,6 +150,19 @@ h4{
     opacity: 0.8;
 }
 .btn{
-    background-color: rgb(212, 139, 2);
+    background-color: rgb(255, 145, 59);
     color: black;
+}
+.text-center{
+    color: rgb(37, 22, 10);
+    font-weight: bolder;
+    font-size: 20px;
+}
+.city{
+    color: rgb(255, 145, 59);
+    margin-top: -25px;
+    margin-left: -62px
+}
+.temp{
+    color:  rgb(255, 145, 59);
 }
