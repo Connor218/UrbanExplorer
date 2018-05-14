@@ -72,7 +72,10 @@ h4{
     text-align:center;
     font-size: 1em;
 }
-  
+
+#myform{
+    margin-top:1.5em;
+}
 
 /* adjust bootstrap elements to mimic the assignment format*/
 
@@ -109,9 +112,11 @@ h4{
 }
 
 @media(max-width:768px) {
-    .images{
-        max-block-size: 170px;
-        max-width: 170px;
+#futureLogo > img {
+        /* max-block-size: 120px; */
+    max-block-size: 180px;
+    max-width: 180px;
+
     }
 }
 @media(max-width:578px) {
@@ -129,15 +134,19 @@ h4{
         font-size:1.2em;
     }
 
-    .imgCenter{
-        margin-left:0;
-        margin-right:auto;
-        width: 100%;
-    }
-    img{
+.imgButtons{
+    max-height: 120px;
+    display: block; 
+}
+.imgWrap{
+    max-height: 120px;
+    max-width: 120px;
+    /* display: block;  */
+}
+    /* img{
         max-block-size: 180px !important;
         float:left;
-    }
+    } */
 
    .col-xs-6, .col-sm-6{
         max-width: 50%;
@@ -160,8 +169,8 @@ h4{
 }
 .city{
     color: rgb(255, 145, 59);
-    margin-top: -25px;
-    margin-left: -62px
+    /* margin-top: -25px; */
+    /* margin-left: -62px */
 }
 .temp{
     color:  rgb(255, 145, 59);

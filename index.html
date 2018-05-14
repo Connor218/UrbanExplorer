@@ -17,29 +17,36 @@
 
 <body>
     <div class="row" >
-        <nav class="navbar-brand bg-dark col-md-4 offset-md-4" id = "brand">
-            <img id="demo" src ="assets/images/sitelogo-invert.png" alt ="site logo">
-        </nav>
-    </div>
-
-    <!-- Retrieved Weather display data will be displayed here  -->
-    <div class="container" id = "cityWeather" >
-        <!-- Weather Content here -->
-    </div>
-
-    <div class="row" id="landing-filler-top">
-
-        <div  class= "col-md-12 col-sm-12 ">
+        <div class= "col-md-4 col-sm-4 " id = "top-left-oneThird">
+            <div class="container" id = "futureLogo" >    </div>
         </div>
+        <div class= "col-md-4 col-sm-4 " id = "cityWeather">
+            <!-- <nav class="navbar-brand bg-dark col-md-4" id = "brand"> -->
+            <div class="container" id = "Logo" > <img src ="assets/images/sitelogo-invert.png" style = "margin-left:2em;" alt ="site logo">    </div>
+            <!-- </nav> -->
+        </div>
+        <div class= "col-md-4 col-sm-4 "  id = "top-right-oneThird">
+            <div class="container" id = "futureSearch" >    </div>
 
+        </div>
     </div>
-    <div  class="container">
-        <div id="addressbox" class="row" >
+    <!-- Retrieved Weather display data will be displayed here  -->
+
+
+    <div class="row" id="landing-filler-top-wrapper">
+
+        <div  class= "col-md-12 col-sm-12 " id="landing-filler-top">
+
+        </div>
+    </div>
+    <div class="container">
+        <div class="row" id = "searchOriginal">
+
             <!-- <div class="jumbotron col-md-9 col-sm-6" id = "buttonGroup"> -->
             <!-- </div> -->
-            <div class="jumbotron col-md-4 col-sm-4 landing-filler" > 
-            </div>
+            <div class="jumbotron col-md-4 col-sm-4 landing-filler" > </div>
             <div class="jumbotron col-md-4 col-sm-4 landing-filler" >
+
                 <form id ="myform" class="form-inline">
                     <input class="form-control mr-sm-2" type="search" id= "searchField" placeholder="Enter Address" aria-label="Search">
                     <button class="btn btn-outline-light my-2 my-sm-0" id = "searchButton" type="submit">Search</button>
@@ -50,9 +57,8 @@
             <!-- <form class="jumbotron col-md-12 col-sm-6" id="game-form">
                 <input type="text" id="game-input" value=""><br>
                 <input  id="add-game" type="submit" class="badge badge-pill badge-secondary" value="Add a game">
-            </form> -->
-            
-        </div>
+            </form> --> 
+        </div>   
         
         <!-- MOST Important hidden div to the place api to work don't delete all the time-->
         <div id="map"></div>
