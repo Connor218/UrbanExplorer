@@ -123,6 +123,24 @@ function initMap(someVar) {    // fill the the blank to pass some variable here
   }, callback);
 }
 
+    
+// To calculate distance between two coordinates 
+function calcDistance(pointAx, pointAy, pointBx, pointBy) {
+
+    var xDistanceDegree = pointBx-pointAx 
+    var yDistanceDegree = pointBy-pointAy
+    // console.log(xDistance +" " + yDistance);
+
+    // DistanceDegree values are in latitude and longitude. Need to convert from degrees to miles. 68.703 represents 1 degree in miles
+    // Calculating the hypotenuse of a right triangle
+
+    var zDistanceMiles = 68.703*(Math.sqrt((xDistanceDegree * xDistanceDegree) + (yDistanceDegree * yDistanceDegree)));
+    // console.log(zDistance);
+
+    return zDistanceMiles
+}
+
+
 
 function callback(results, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
