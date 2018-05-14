@@ -41,19 +41,6 @@ $(document).ready(function () {
         }
     }
 
-    // $("#myform").submit(function (event) {
-    //     event.preventDefault();
-
-    // });
-    $("#searchButton").one("click", function () {
-        //change the logo location on click
-        $("#demo").css("margin-left", "+=-350");
-        // $("#addressbox").css("margin-top", "+=-205px");
-        // $("#addressbox").css("margin-right", "+=-1244px");
-       
-    });
-
-
     //define a variable to capture user click and store button's value into the var
     // var currentQueryVar;
     $(document).on("click", "#searchButton", function (event) {
