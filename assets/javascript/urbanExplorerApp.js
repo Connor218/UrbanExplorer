@@ -150,8 +150,8 @@ $(document).ready(function () {
     var map;
     // var infowindow;
 
-    function initMap(someVar) {    // fill the the blank to pass some variable here
-        var pyrmont = { lat: 37.4228775, lng: -122.085133 };  //fill the the blank where to pass addressGeometryLat addressGeometryLong?
+    function initMap(someVar) {   
+        var pyrmont = { lat: addressGeometryLat, lng: addressGeometryLong }; 
 
         map = new google.maps.Map(document.getElementById('map'), {
             center: pyrmont,
@@ -164,7 +164,7 @@ $(document).ready(function () {
             location: pyrmont,
             radius: 3500,
             type: ['restaurant'],
-            keyword: 'steak',  //fill in the the blank where to use someVar??
+            keyword: someVar,  
         }, callback);
     }
 
@@ -186,7 +186,7 @@ $(document).ready(function () {
                 // var types = String(place.types);
                 // types = types.split(",");
                 // console.log(types[0]);
-                renderTableData(i + 1, place.name, place.vicinity, "not sure yet", place.rating, place.opening_hours.open_now);
+                renderTableData(i + 1, place.name, place.vicinity, calcDistance(place.geometry.location.lat(),place.geometry.location.lng(),addressGeometryLat, addressGeometryLong), place.rating, place.opening_hours.open_now);
 
             }
         }
@@ -202,7 +202,7 @@ $(document).ready(function () {
 
         foodQueryVar = $(this).attr("data-foodtype");
         console.log(foodQueryVar);
-        initMap();  // fill in the blank what should go inside initMap function?
+        initMap(foodQueryVar);
 
     });
 
@@ -211,7 +211,7 @@ $(document).ready(function () {
     // reference link https://www.w3schools.com/jquery/event_hover.asp
     $(document).on("mouseover", ".imgButtons", function () {
         $(this).hover(function () { $(this).attr("src", "assets/images/0" + $(this).attr("data-foodindex") + "i.png") },
-            function () { "..." });  //fill in the blank here, what should be inside the outer function?
+            function () { $(this).attr("src", "assets/images/0" + $(this).attr("data-foodindex") + ".png")});
 
     });
 
@@ -220,7 +220,7 @@ $(document).ready(function () {
     function renderTableHeader() {
         var tableHooker = $("#contentContainer");
         var table = $("<table>").attr("class", "table table-striped table-dark");
-        var thead = $("<thead>").html("<tr><th scope=\"col\"></th><th scope=\"col\">Name of Place</th><th scope=\"col\">Address</th><th scope=\"col\">Appx Distance (Miles)</th><th scope=\"col\">Rating (Max 5.0)</th><th scope=\"col\">Open</th></tr>");
+        var thead = $("<thead>").html("<tr><th scope=\"col\">#</th><th scope=\"col\">Name of Place</th><th scope=\"col\">Address</th><th scope=\"col\">Appx Distance (Miles)</th><th scope=\"col\">Rating (Max 5.0)</th><th scope=\"col\">Open</th></tr>");
         var tbody = $("<tbody>").attr("id", "table-content"); // define tbody id hooker to make future data append easier
         table.append(thead, tbody);
         tableHooker.append(table);
@@ -229,15 +229,7 @@ $(document).ready(function () {
     // define a recallable table body render to fill in the table data
     function renderTableData(a, b, c, d, e, f) {
         var tableContentHooker = $("#table-content");
-        var tdata = $("<tr>").html("fill in here ");        //fill in the blank using linh's table and line 178 as reference point 
-        // <tr>
-        //     <th scope="row">1</th>
-        //     <td>Cafe</td>
-        //     <td>Nob Hill</td>
-        //     <td>555-5555</td>
-        //     <td>Nob Hill</td>
-        //     <td>555-5555</td>
-        // </tr>
+        var tdata = $("<tr>").html("<td scope=\"col\">"+ a +"</td><td scope=\"col\">"+b+"</td><td scope=\"col\">"+c+"</td><td scope=\"col\">"+d+"</td><td scope=\"col\">"+e+"</td><td scope=\"col\">"+f+"</td>");    
 
         tableContentHooker.append(tdata);
 
@@ -259,6 +251,6 @@ function calcDistance(pointAx, pointAy, pointBx, pointBy) {
 
     var zDistanceMiles = 68.703*(Math.sqrt((xDistanceDegree * xDistanceDegree) + (yDistanceDegree * yDistanceDegree)));
     // console.log(zDistance);
-
-    return zDistanceMiles
+    zDistanceMiles = Math.round(zDistanceMiles * 10) / 10;
+    return zDistanceMiles;
 }
