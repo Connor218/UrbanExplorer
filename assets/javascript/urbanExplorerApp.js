@@ -26,6 +26,8 @@ $(document).ready(function () {
         }
     }
 
+
+
     // Initialize Firebase
     var config = {
         apiKey: "AIzaSyCIccHJ6pBk5j_LX4oNadIhetMTSSKr0ps",
@@ -40,7 +42,6 @@ $(document).ready(function () {
 
     //a path to the database, it stores all the input data
     var database = firebase.database();
-    console.log("get database firebase:", database);
 
     //take the input data(address) and push it to firebase database(button for adding address)
     $("#myform").submit(function (event) {
@@ -73,6 +74,11 @@ $(document).ready(function () {
         event.preventDefault();
         //     //change the logo location on click
         $("#demo").css("margin-left", "+=-350");
+        
+        //function that replaces dots with spaces
+        //console.log("reset address" + inputAddressValidation($("#searchField").val()));
+        inputAddressValidation($("#searchField").val());
+                  
 
         currentQueryVar = $("#searchField").val();
         //console.log(currentQueryVar);
@@ -84,18 +90,19 @@ $(document).ready(function () {
         }).then(function (response) {
             //log full response
             console.log(response);
+            console.log(currentURL);
             // $("#contentContainer").text(JSON.stringify(response));
 
             //formated address
             // console.log("the formatted address is: " + response.results[0].formatted_address)
             //address geometry
             addressGeometryLat = response.results[0].geometry.location.lat
-            console.log("the geometry of location latitude is: " + response.results[0].geometry.location.lat)
+            //console.log("the geometry of location latitude is: " + response.results[0].geometry.location.lat)
             addressGeometryLong = response.results[0].geometry.location.lng
-            console.log("the geometry of location longitude is: " + response.results[0].geometry.location.lng)
+            //console.log("the geometry of location longitude is: " + response.results[0].geometry.location.lng)
             //we are going to use the cityName variable to use in weather API AJAX
             cityName = response.results[0].address_components[3].long_name
-            console.log("the name of the city is: " + response.results[0].address_components[3].long_name)
+            //console.log("the name of the city is: " + response.results[0].address_components[3].long_name)
 
             //call weather api to extract weather information using cityname as parameter
             var APIKey = "ae1eea3fe56f73fb07fdc6e4480bc31b";
@@ -111,9 +118,9 @@ $(document).ready(function () {
                 method: "GET"
             }).then(function (response) {
                 // Log the queryURL
-                console.log(queryURL);
+                //console.log(queryURL);
                 // Log the resulting object
-                console.log(response);
+                //console.log(response);
                 // Transfer content to HTML
                 var weatherHooker = $("#cityWeather"); // get hold of the cityweaher class container prepare to append to this div
                 weatherHooker.empty();  // empty the contents inside this container to avoid overlapping append
@@ -167,7 +174,6 @@ $(document).ready(function () {
             keyword: 'steak',  //fill in the the blank where to use someVar??
         }, callback);
     }
-
 
     function callback(results, status) {
         if (status == google.maps.places.PlacesServiceStatus.OK) {
@@ -242,4 +248,12 @@ $(document).ready(function () {
         tableContentHooker.append(tdata);
 
     }
+
+    // function that replaces dots with spaces
+    function inputAddressValidation(inputString) {
+        var dotReplacedInput = inputString.replace(/\./g, " ");
+        console.log("revised address is: ", dotReplacedInput);
+        return dotReplacedInput
+    }
+
 });
