@@ -51,10 +51,13 @@ $(document).ready(function () {
     // var currentQueryVar;
     $(document).on("click", "#searchButton", function (event) {
         event.preventDefault();
-
-
-        //     //change the logo location on click
-        $("#demo").css("margin-left", "+=-350");
+        $("#contentContainer").empty(); 
+        //starting here to update the logo and weather position
+        //move the log to the top left corner
+        $("#futureLogo").html("<img src =\"assets/images/sitelogo-invert.png\" style = \"margin-left:2em;\"alt =\"site logo\">");
+        //delete the old logo
+        $("#Logo").empty();
+        //ending here update the logo and weather position
 
         //function that replaces dots with spaces
         //console.log("reset address" + inputAddressValidation($("#searchField").val()));
@@ -133,7 +136,7 @@ $(document).ready(function () {
             var userInputAddress = $("#searchField").val().trim()
 
             //to empty the serach box
-            $("#searchField").val("");
+            // $("#searchField").val("");
 
             //holding the address info/data in local object
             //push(upload) our data to firebase every time the form gets submited with unique key
@@ -152,7 +155,7 @@ $(document).ready(function () {
             });
         });
     });
-    renderButtons(foodArray);   //for debug testing use, delete before publish render food array button to html page
+    // renderButtons(foodArray);   //for debug testing use, delete before publish render food array button to html page
 
 
     //user click the imgButtons calling google place api
@@ -216,6 +219,13 @@ $(document).ready(function () {
 
     });
 
+    $(document).one("click", ".imgButtons", function(){  //sara found the one click feature
+
+        $("#landing-filler-top-wrapper").empty();
+        //Switch search bar location
+        $("#top-right-oneThird").html("<form class=\"form-inline\" id =\"myform\"> <input class=\"form-control mr-sm-2\" type=\"search\" id= \"searchField\" placeholder=\"Enter Address\" aria-label=\"Search\"><button class=\"btn btn-outline-light my-2 my-sm-0\" id = \"searchButton\" type=\"submit\">Search</button></form>");
+        $("#searchOriginal").html("");
+    });
 
     //deal with hover effect 
     // reference link https://www.w3schools.com/jquery/event_hover.asp
