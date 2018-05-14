@@ -12,6 +12,8 @@ In this project, we will be using google place and geo api to create sth for tra
 * Bootstrap framework 
 * [Firebase online storage](https://firebase.google.com/)
 
+##Deployed site
+* [Click Here](https://connor218.github.io/UrbanExplorer/)
 
 ## Installation
 Download the zip file, unzip on the desktop, open index.html
