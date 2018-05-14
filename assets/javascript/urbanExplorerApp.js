@@ -52,6 +52,7 @@ $(document).ready(function () {
     $(document).on("click", "#searchButton", function (event) {
         event.preventDefault();
 
+        $("#contentContainer").empty();  // empty out the table area when user clicks search
 
         //     //change the logo location on click
         $("#demo").css("margin-left", "+=-350");
@@ -117,6 +118,9 @@ $(document).ready(function () {
                 // $(".wind").text("Wind Speed: " + response.wind.speed);
                 // $(".humidity").text("Humidity: " + response.main.humidity);
                 $(".temp").prepend($("<span>").text("Temperature (F) " + response.main.temp));
+                $(".temp").append($("<h6>").text("Description " + response.weather["0"].description));
+                console.log("test 1",response.weather["0"].description)
+                
                 // Log the data in the console as well
                 // console.log("Wind Speed: " + response.wind.speed);
                 // console.log("Humidity: " + response.main.humidity);
@@ -133,7 +137,7 @@ $(document).ready(function () {
             var userInputAddress = $("#searchField").val().trim()
 
             //to empty the serach box
-            $("#searchField").val("");
+            // $("#searchField").val("");
 
             //holding the address info/data in local object
             //push(upload) our data to firebase every time the form gets submited with unique key
@@ -152,7 +156,7 @@ $(document).ready(function () {
             });
         });
     });
-    renderButtons(foodArray);   //for debug testing use, delete before publish render food array button to html page
+    // renderButtons(foodArray);   //for debug testing use, delete before publish render food array button to html page
 
 
     //user click the imgButtons calling google place api
@@ -192,11 +196,18 @@ $(document).ready(function () {
                 console.log("lat = " + place.geometry.location.lat());   //restaurant lat info
                 console.log("lon = " + place.geometry.location.lng());   //restaurant long info
                 console.log("Open? " + place.opening_hours.open_now);  //restaurant still opening or not
+                var status;
+                if(place.opening_hours.open_now === true) {
+                   status ="Open";
+                }
 
+                else {
+                    status = "Closed";
+                }
                 // var types = String(place.types);
                 // types = types.split(",");
                 // console.log(types[0]);
-                renderTableData(i + 1, place.name, place.vicinity, calcDistance(place.geometry.location.lat(),place.geometry.location.lng(),addressGeometryLat, addressGeometryLong), place.rating, place.opening_hours.open_now);
+                renderTableData(i + 1, place.name, place.vicinity, calcDistance(place.geometry.location.lat(),place.geometry.location.lng(),addressGeometryLat, addressGeometryLong), place.rating, status);
 
             }
         }
@@ -230,7 +241,7 @@ $(document).ready(function () {
     function renderTableHeader() {
         var tableHooker = $("#contentContainer");
         var table = $("<table>").attr("class", "table table-striped table-dark");
-        var thead = $("<thead>").html("<tr><th scope=\"col\">#</th><th scope=\"col\">Name of Place</th><th scope=\"col\">Address</th><th scope=\"col\">Appx Distance (Miles)</th><th scope=\"col\">Rating (Max 5.0)</th><th scope=\"col\">Open</th></tr>");
+        var thead = $("<thead>").html("<tr><th scope=\"col\">#</th><th scope=\"col\">Name of Place</th><th scope=\"col\">Address</th><th scope=\"col\">Appx Distance (Miles)</th><th scope=\"col\">Rating (Max 5.0)</th><th scope=\"col\">Today</th></tr>");
         var tbody = $("<tbody>").attr("id", "table-content"); // define tbody id hooker to make future data append easier
         table.append(thead, tbody);
         tableHooker.append(table);
