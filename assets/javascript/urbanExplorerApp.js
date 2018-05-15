@@ -230,8 +230,8 @@ $(document).ready(function () {
     //deal with hover effect 
     // reference link https://www.w3schools.com/jquery/event_hover.asp
     $(document).on("mouseover", ".imgButtons", function () {
-        $(this).hover(function () { $(this).attr("src", "assets/images/0" + $(this).attr("data-foodindex") + "i.png") },
-            function () { $(this).attr("src", "assets/images/0" + $(this).attr("data-foodindex") + ".png")});
+        $(".imgButtons").hover(function () { $(this).attr("src", "assets/images/0" + $(this).attr("data-foodindex") + "i.png")},
+                     function () { $(this).attr("src", "assets/images/0" + $(this).attr("data-foodindex") + ".png")});
 
     });
 

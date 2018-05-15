@@ -106,6 +106,21 @@ h4{
     /* box-shadow: 0.05em 0.05em rgb(146, 146, 146); */
 }
 
+.imgWrap >p {
+    /* visibility :hidden; */
+    margin-top:-3em;
+    color: rgba(68, 94, 160, 255);
+    font-size:1em;
+    font-weight:normal;
+    opacity:0;
+
+}
+.imgWrap:hover >p {
+    margin-top:-2.6em;
+    font-size:1em;
+    font-weight:normal;
+    opacity:1;
+}
 
 .container{
     min-height:100%;
@@ -134,15 +149,15 @@ h4{
         font-size:1.2em;
     }
 
-.imgButtons{
-    max-height: 120px;
-    display: block; 
-}
-.imgWrap{
-    max-height: 120px;
-    max-width: 120px;
-    /* display: block;  */
-}
+    .imgButtons{
+        max-height: 120px;
+        display: block; 
+    }
+    .imgWrap{
+        max-height: 120px;
+        max-width: 120px;
+        /* display: block;  */
+    }
     /* img{
         max-block-size: 180px !important;
         float:left;
@@ -175,3 +190,4 @@ h4{
 .temp{
     color:  rgb(255, 145, 59);
 }
+
