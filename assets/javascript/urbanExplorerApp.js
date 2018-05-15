@@ -23,8 +23,8 @@ $(document).ready(function () {
 
     var buttonHooker = $("#foodButtonWrapper");  // create a variable to hook all buttons ad future user input append
 
-    function renderButtons(arr) {  
-              // create a function to render current game array as  buttons
+    function renderButtons(arr) {
+        // create a function to render current game array as  buttons
         for (var i = 0; i < arr.length; i++) {
 
             var newDiv = $("<div>").attr("class", "imgWrap jumbotron col-md-3 col-sm-4 col-xs-6");
@@ -42,11 +42,32 @@ $(document).ready(function () {
         }
     }
 
+    //using firebase to count the searches (on the screen before click) 
+    database.ref("/clicks").on("child_added", function (snap) {
+        //console.log(snap.val());
+        var count = snap.val();
+
+        $(".count").text("Searches made: " + count)
+    })
     //define a variable to capture user click and store button's value into the var
     // var currentQueryVar;
     $(document).on("click", "#searchButton", function (event) {
         event.preventDefault();
-        $("#contentContainer").empty(); 
+
+        //using firebase to count the searches (still on the screen after click) 
+        database.ref("/clicks").on("child_added", function (snap) {
+            //console.log(snap.val());
+            var count = snap.val();
+            var newCount = count + 1
+
+            $(".count").text("Searches made: " + count)
+            database.ref("/clicks").set({
+                count: newCount
+
+            })
+        })
+
+        $("#contentContainer").empty();
         //starting here to update the logo and weather position
         //move the log to the top left corner
         $("#futureLogo").html("<img src =\"assets/images/sitelogo-invert.png\" style = \"margin-left:2em;\"alt =\"site logo\">");
@@ -60,8 +81,18 @@ $(document).ready(function () {
         //console.log("reset address" + inputAddressValidation($("#searchField").val()));
         inputAddressValidation($("#searchField").val());
 
-
         currentQueryVar = $("#searchField").val();
+
+        //if we want to add a drop down menu for previous searched addresses in local storage(see below) 
+        // var storageArray = [];
+        // storageArray.push(currentQueryVar)
+        // localStorage.setItem("searches", storageArray);
+
+        // var storageData = localStorage.getItem("searches")
+        // console.log("test", storageData);
+        // $("#recentsearches").append(storageData.split(","))
+
+
         //console.log(currentQueryVar);
         var currentURL = "https://maps.googleapis.com/maps/api/geocode/json?address=" + currentQueryVar + "key=AIzaSyBGnYxlsr-8atPpbWbMsM2crsD-kah9JAI";
         //*************  Google Geo API ***************
@@ -118,8 +149,8 @@ $(document).ready(function () {
                 // $(".humidity").text("Humidity: " + response.main.humidity);
                 $(".temp").prepend($("<span>").text("Temperature (F) " + response.main.temp));
                 $(".temp").append($("<h6>").text("Description " + response.weather["0"].description));
-                console.log("test 1",response.weather["0"].description)
-                
+                console.log("test 1", response.weather["0"].description)
+
                 // Log the data in the console as well
                 // console.log("Wind Speed: " + response.wind.speed);
                 // console.log("Humidity: " + response.main.humidity);
@@ -187,7 +218,7 @@ $(document).ready(function () {
             $("#contentContainer").empty();  // empty out the table area in a new circle
             renderTableHeader();  //render table data
             var newIterration = results.length;
-            if  (newIterration> 10)   newIterration = 10 ; 
+            if (newIterration > 10) newIterration = 10;
             for (var i = 0; i < newIterration; i++) {
                 var place = results[i];  //travese through a list of returned restaurant objects
                 console.log(place.name); //restaurant name
@@ -198,8 +229,8 @@ $(document).ready(function () {
                 console.log("lon = " + place.geometry.location.lng());   //restaurant long info
                 console.log("Open? " + place.opening_hours.open_now);  //restaurant still opening or not
                 var status;
-                if(place.opening_hours.open_now === true) {
-                   status ="Open";
+                if (place.opening_hours.open_now === true) {
+                    status = "Open";
                 }
 
                 else {
@@ -208,7 +239,7 @@ $(document).ready(function () {
                 // var types = String(place.types);
                 // types = types.split(",");
                 // console.log(types[0]);
-                renderTableData(i + 1, place.name, place.vicinity, calcDistance(place.geometry.location.lat(),place.geometry.location.lng(),addressGeometryLat, addressGeometryLong), place.rating, status);
+                renderTableData(i + 1, place.name, place.vicinity, calcDistance(place.geometry.location.lat(), place.geometry.location.lng(), addressGeometryLat, addressGeometryLong), place.rating, status);
 
             }
         }
@@ -228,7 +259,7 @@ $(document).ready(function () {
 
     });
 
-    $(document).one("click", ".imgButtons", function(){  //sara found the one click feature
+    $(document).one("click", ".imgButtons", function () {  //sara found the one click feature
 
         $("#landing-filler-top-wrapper").empty();
         //Switch search bar location
@@ -240,7 +271,7 @@ $(document).ready(function () {
     // reference link https://www.w3schools.com/jquery/event_hover.asp
     $(document).on("mouseover", ".imgButtons", function () {
         $(this).hover(function () { $(this).attr("src", "assets/images/0" + $(this).attr("data-foodindex") + "i.png") },
-                                    function () { $(this).attr("src", "assets/images/0" + $(this).attr("data-foodindex") + ".png") });
+            function () { $(this).attr("src", "assets/images/0" + $(this).attr("data-foodindex") + ".png") });
 
     });
 
