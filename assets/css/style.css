@@ -176,3 +176,8 @@ h4{
 .temp{
     color:  rgb(255, 145, 59);
 }
+.count{
+    margin-left: 20px;
+    color:  rgb(204, 167, 136);
+    font-weight: bolder;
+}
