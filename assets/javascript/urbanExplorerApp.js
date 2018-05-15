@@ -27,7 +27,7 @@ $(document).ready(function () {
         // create a function to render current game array as  buttons
         for (var i = 0; i < arr.length; i++) {
 
-            var newDiv = $("<div>").attr("class", "imgWrap jumbotron col-md-3 col-sm-4 col-xs-6");
+            var newDiv = $("<div>").attr("class", "imgWrap  col-md-3 col-sm-4 col-xs-6");
             var newImg = $("<img>").attr("src", foodIconArray[i]);
             newImg.attr("class", "imgButtons");
             //newImg.attr("data-hover",foodIconArrayHover[i]);
@@ -65,23 +65,26 @@ $(document).ready(function () {
                 count: newCount
 
             })
-        })
+        });
 
         $("#contentContainer").empty();
         //starting here to update the logo and weather position
         //move the log to the top left corner
-        $("#futureLogo").html("<img src =\"assets/images/sitelogo-invert.png\" style = \"margin-left:2em;\"alt =\"site logo\">");
-        //delete the old logo
-        $("#Logo").empty();
-        //ending here update the logo and weather position
 
-        $("#contentContainer").empty();  // empty out the table area when user clicks search
 
         //function that replaces dots with spaces
         //console.log("reset address" + inputAddressValidation($("#searchField").val()));
         inputAddressValidation($("#searchField").val());
 
         currentQueryVar = $("#searchField").val();
+        if(currentQueryVar != "" ){
+            $("#futureLogo").html("<img src =\"assets/images/sitelogo-invert.png\" style = \"margin-left:2em;\"alt =\"site logo\">");
+            //delete the old logo
+            $("#Logo").empty();
+            //ending here update the logo and weather position
+
+            $("#contentContainer").empty();  // empty out the table area when user clicks search
+        }
 
         //if we want to add a drop down menu for previous searched addresses in local storage(see below) 
         // var storageArray = [];
@@ -139,17 +142,17 @@ $(document).ready(function () {
                 var newCity = $("<div>").attr("class", "city text-center");  // create city div
                 var newTemp = $("<div>").attr("class", "temp text-center");    // create temp div
                 var newThermo = $("<img>").attr("src", "assets/images/thermo.png");
-                newThermo.attr("width", "45px");
+                newThermo.attr("width", "25px");
                 newTemp.append(newThermo);
                 weatherHooker.append(newCity, newTemp);
 
 
-                $(".city").html("<h5>" + response.name + " Weather </h5>");
+                $(".city").html("<h5>" + cityName + " Weather </h5>");
                 // $(".wind").text("Wind Speed: " + response.wind.speed);
                 // $(".humidity").text("Humidity: " + response.main.humidity);
                 $(".temp").prepend($("<span>").text("Temperature (F) " + response.main.temp));
                 $(".temp").append($("<h6>").text("Description " + response.weather["0"].description));
-                console.log("test 1", response.weather["0"].description)
+                console.log("test 1", response.weather[0].description)
 
                 // Log the data in the console as well
                 // console.log("Wind Speed: " + response.wind.speed);
@@ -269,11 +272,19 @@ $(document).ready(function () {
 
     //deal with hover effect            
     // reference link https://www.w3schools.com/jquery/event_hover.asp
-    $(document).on("mouseover", ".imgButtons", function () {
-        $(this).hover(function () { $(this).attr("src", "assets/images/0" + $(this).attr("data-foodindex") + "i.png") },
-            function () { $(this).attr("src", "assets/images/0" + $(this).attr("data-foodindex") + ".png") });
+    // $(document).on("mouseover", ".imgButtons", function () {
+    //     $(this).hover(function () { $(this).attr("src", "assets/images/0" + $(this).attr("data-foodindex") + "i.png") },
+    //         function () { $(this).attr("src", "assets/images/0" + $(this).attr("data-foodindex") + ".png") });
 
-    });
+    // });
+    $(document).on({
+    mouseenter:function(){
+        $(this).attr("src","assets/images/0"+$(this).attr("data-foodindex") +"i.png")
+    },
+    mouseleave:function(){
+        $(this).attr("src","assets/images/0"+$(this).attr("data-foodindex") +".png")
+    }
+    } , ".imgButtons");
 
     // separate table header render from tbody data.
 
