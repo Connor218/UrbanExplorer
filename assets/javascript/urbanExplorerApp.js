@@ -23,10 +23,11 @@ $(document).ready(function () {
 
     var buttonHooker = $("#foodButtonWrapper");  // create a variable to hook all buttons ad future user input append
 
-    function renderButtons(arr) {             // create a function to render current game array as  buttons
+    function renderButtons(arr) {
+        // create a function to render current game array as  buttons
         for (var i = 0; i < arr.length; i++) {
 
-            var newDiv = $("<div>").attr("class", "imgWrap jumbotron col-md-3 col-sm-4 col-xs-6");
+            var newDiv = $("<div>").attr("class", "imgWrap  col-md-3 col-sm-4 col-xs-6");
             var newImg = $("<img>").attr("src", foodIconArray[i]);
             newImg.attr("class", "imgButtons");
             //newImg.attr("data-hover",foodIconArrayHover[i]);
@@ -41,30 +42,60 @@ $(document).ready(function () {
         }
     }
 
-    // $("#myform").submit(function (event) {
-    //     event.preventDefault();
+    //using firebase to count the searches (on the screen before click) 
+    database.ref("/clicks").on("child_added", function (snap) {
+        //console.log(snap.val());
+        var count = snap.val();
 
-    // });
-
-
+        $(".count").text("Searches made: " + count)
+    })
     //define a variable to capture user click and store button's value into the var
     // var currentQueryVar;
     $(document).on("click", "#searchButton", function (event) {
         event.preventDefault();
-        $("#contentContainer").empty(); 
+
+        //using firebase to count the searches (still on the screen after click) 
+        database.ref("/clicks").on("child_added", function (snap) {
+            //console.log(snap.val());
+            var count = snap.val();
+            var newCount = count + 1
+
+            $(".count").text("Searches made: " + count)
+            database.ref("/clicks").set({
+                count: newCount
+
+            })
+        });
+
+        $("#contentContainer").empty();
         //starting here to update the logo and weather position
         //move the log to the top left corner
-        $("#futureLogo").html("<img src =\"assets/images/sitelogo-invert.png\" style = \"margin-left:2em;\"alt =\"site logo\">");
-        //delete the old logo
-        $("#Logo").empty();
-        //ending here update the logo and weather position
+
 
         //function that replaces dots with spaces
         //console.log("reset address" + inputAddressValidation($("#searchField").val()));
         inputAddressValidation($("#searchField").val());
 
-
         currentQueryVar = $("#searchField").val();
+        if(currentQueryVar != "" ){
+            $("#futureLogo").html("<img src =\"assets/images/sitelogo-invert.png\" style = \"margin-left:2em;\"alt =\"site logo\">");
+            //delete the old logo
+            $("#Logo").empty();
+            //ending here update the logo and weather position
+
+            $("#contentContainer").empty();  // empty out the table area when user clicks search
+        }
+
+        //if we want to add a drop down menu for previous searched addresses in local storage(see below) 
+        // var storageArray = [];
+        // storageArray.push(currentQueryVar)
+        // localStorage.setItem("searches", storageArray);
+
+        // var storageData = localStorage.getItem("searches")
+        // console.log("test", storageData);
+        // $("#recentsearches").append(storageData.split(","))
+
+
         //console.log(currentQueryVar);
         var currentURL = "https://maps.googleapis.com/maps/api/geocode/json?address=" + currentQueryVar + "key=AIzaSyBGnYxlsr-8atPpbWbMsM2crsD-kah9JAI";
         //*************  Google Geo API ***************
@@ -111,15 +142,18 @@ $(document).ready(function () {
                 var newCity = $("<div>").attr("class", "city text-center");  // create city div
                 var newTemp = $("<div>").attr("class", "temp text-center");    // create temp div
                 var newThermo = $("<img>").attr("src", "assets/images/thermo.png");
-                newThermo.attr("width", "45px");
+                newThermo.attr("width", "25px");
                 newTemp.append(newThermo);
                 weatherHooker.append(newCity, newTemp);
 
 
-                $(".city").html("<h5>" + response.name + " Weather </h5>");
+                $(".city").html("<h5>" + cityName + " Weather </h5>");
                 // $(".wind").text("Wind Speed: " + response.wind.speed);
                 // $(".humidity").text("Humidity: " + response.main.humidity);
                 $(".temp").prepend($("<span>").text("Temperature (F) " + response.main.temp));
+                $(".temp").append($("<h6>").text("Description " + response.weather["0"].description));
+                console.log("test 1", response.weather[0].description)
+
                 // Log the data in the console as well
                 // console.log("Wind Speed: " + response.wind.speed);
                 // console.log("Humidity: " + response.main.humidity);
@@ -164,8 +198,8 @@ $(document).ready(function () {
     var map;
     // var infowindow;
 
-    function initMap(someVar) {   
-        var pyrmont = { lat: addressGeometryLat, lng: addressGeometryLong }; 
+    function initMap(someVar) {
+        var pyrmont = { lat: addressGeometryLat, lng: addressGeometryLong };
 
         map = new google.maps.Map(document.getElementById('map'), {
             center: pyrmont,
@@ -178,7 +212,7 @@ $(document).ready(function () {
             location: pyrmont,
             radius: 3500,
             type: ['restaurant'],
-            keyword: someVar,  
+            keyword: someVar,
         }, callback);
     }
 
@@ -186,7 +220,9 @@ $(document).ready(function () {
         if (status == google.maps.places.PlacesServiceStatus.OK) {
             $("#contentContainer").empty();  // empty out the table area in a new circle
             renderTableHeader();  //render table data
-            for (var i = 0; i < results.length; i++) {
+            var newIterration = results.length;
+            if (newIterration > 10) newIterration = 10;
+            for (var i = 0; i < newIterration; i++) {
                 var place = results[i];  //travese through a list of returned restaurant objects
                 console.log(place.name); //restaurant name
                 // console.log(place.place_id);
@@ -195,11 +231,18 @@ $(document).ready(function () {
                 console.log("lat = " + place.geometry.location.lat());   //restaurant lat info
                 console.log("lon = " + place.geometry.location.lng());   //restaurant long info
                 console.log("Open? " + place.opening_hours.open_now);  //restaurant still opening or not
+                var status;
+                if (place.opening_hours.open_now === true) {
+                    status = "Open";
+                }
 
+                else {
+                    status = "Closed";
+                }
                 // var types = String(place.types);
                 // types = types.split(",");
                 // console.log(types[0]);
-                renderTableData(i + 1, place.name, place.vicinity, calcDistance(place.geometry.location.lat(),place.geometry.location.lng(),addressGeometryLat, addressGeometryLong), place.rating, place.opening_hours.open_now);
+                renderTableData(i + 1, place.name, place.vicinity, calcDistance(place.geometry.location.lat(), place.geometry.location.lng(), addressGeometryLat, addressGeometryLong), place.rating, status);
 
             }
         }
@@ -214,12 +257,12 @@ $(document).ready(function () {
     $(document).on("click", ".imgButtons", function () {
 
         foodQueryVar = $(this).attr("data-foodtype");
-        console.log(foodQueryVar);
+        // console.log(foodQueryVar);
         initMap(foodQueryVar);
 
     });
 
-    $(document).one("click", ".imgButtons", function(){  //sara found the one click feature
+    $(document).one("click", ".imgButtons", function () {  //sara found the one click feature
 
         $("#landing-filler-top-wrapper").empty();
         //Switch search bar location
@@ -227,20 +270,28 @@ $(document).ready(function () {
         $("#searchOriginal").html("");
     });
 
-    //deal with hover effect 
+    //deal with hover effect            
     // reference link https://www.w3schools.com/jquery/event_hover.asp
-    $(document).on("mouseover", ".imgButtons", function () {
-        $(".imgButtons").hover(function () { $(this).attr("src", "assets/images/0" + $(this).attr("data-foodindex") + "i.png")},
-                     function () { $(this).attr("src", "assets/images/0" + $(this).attr("data-foodindex") + ".png")});
+    // $(document).on("mouseover", ".imgButtons", function () {
+    //     $(this).hover(function () { $(this).attr("src", "assets/images/0" + $(this).attr("data-foodindex") + "i.png") },
+    //         function () { $(this).attr("src", "assets/images/0" + $(this).attr("data-foodindex") + ".png") });
 
-    });
+    // });
+    $(document).on({
+    mouseenter:function(){
+        $(this).attr("src","assets/images/0"+$(this).attr("data-foodindex") +"i.png")
+    },
+    mouseleave:function(){
+        $(this).attr("src","assets/images/0"+$(this).attr("data-foodindex") +".png")
+    }
+    } , ".imgButtons");
 
     // separate table header render from tbody data.
 
     function renderTableHeader() {
         var tableHooker = $("#contentContainer");
         var table = $("<table>").attr("class", "table table-striped table-dark");
-        var thead = $("<thead>").html("<tr><th scope=\"col\">#</th><th scope=\"col\">Name of Place</th><th scope=\"col\">Address</th><th scope=\"col\">Appx Distance (Miles)</th><th scope=\"col\">Rating (Max 5.0)</th><th scope=\"col\">Open</th></tr>");
+        var thead = $("<thead>").html("<tr><th scope=\"col\">#</th><th scope=\"col\">Name of Place</th><th scope=\"col\">Address</th><th scope=\"col\">Appx Distance (Miles)</th><th scope=\"col\">Rating (Max 5.0)</th><th scope=\"col\">Today</th></tr>");
         var tbody = $("<tbody>").attr("id", "table-content"); // define tbody id hooker to make future data append easier
         table.append(thead, tbody);
         tableHooker.append(table);
@@ -249,7 +300,7 @@ $(document).ready(function () {
     // define a recallable table body render to fill in the table data
     function renderTableData(a, b, c, d, e, f) {
         var tableContentHooker = $("#table-content");
-        var tdata = $("<tr>").html("<td scope=\"col\">"+ a +"</td><td scope=\"col\">"+b+"</td><td scope=\"col\">"+c+"</td><td scope=\"col\">"+d+"</td><td scope=\"col\">"+e+"</td><td scope=\"col\">"+f+"</td>");    
+        var tdata = $("<tr>").html("<td scope=\"col\">" + a + "</td><td scope=\"col\">" + b + "</td><td scope=\"col\">" + c + "</td><td scope=\"col\">" + d + "</td><td scope=\"col\">" + e + "</td><td scope=\"col\">" + f + "</td>");
 
         tableContentHooker.append(tdata);
 
@@ -273,11 +324,11 @@ $(document).ready(function () {
         // DistanceDegree values are in latitude and longitude. Need to convert from degrees to miles. 68.703 represents 1 degree in miles
         // Calculating the hypotenuse of a right triangle
 
-    var zDistanceMiles = 68.703*(Math.sqrt((xDistanceDegree * xDistanceDegree) + (yDistanceDegree * yDistanceDegree)));
-    // console.log(zDistance);
-    zDistanceMiles = Math.round(zDistanceMiles * 10) / 10;
-    return zDistanceMiles;
-}
+        var zDistanceMiles = 68.703 * (Math.sqrt((xDistanceDegree * xDistanceDegree) + (yDistanceDegree * yDistanceDegree)));
+        // console.log(zDistance);
+        zDistanceMiles = Math.round(zDistanceMiles * 10) / 10;
+        return zDistanceMiles;
+    }
 
 
 });

@@ -23,6 +23,7 @@
         <div class= "col-md-4 col-sm-4 " id = "cityWeather">
             <!-- <nav class="navbar-brand bg-dark col-md-4" id = "brand"> -->
             <div class="container" id = "Logo" > <img src ="assets/images/sitelogo-invert.png" style = "margin-left:2em;" alt ="site logo">    </div>
+            <!-- <div class ="count"></div> -->
             <!-- </nav> -->
         </div>
         <div class= "col-md-4 col-sm-4 "  id = "top-right-oneThird">
@@ -41,14 +42,17 @@
     </div>
     <div class="container">
         <div class="row" id = "searchOriginal">
+
             <!-- <div class="jumbotron col-md-9 col-sm-6" id = "buttonGroup"> -->
             <!-- </div> -->
             <div class="jumbotron col-md-4 col-sm-4 landing-filler" > </div>
             <div class="jumbotron col-md-4 col-sm-4 landing-filler" >
-                <form class="form-inline" id ="myform">
+
+                <form id ="myform" class="form-inline">
                     <input class="form-control mr-sm-2" type="search" id= "searchField" placeholder="Enter Address" aria-label="Search">
                     <button class="btn btn-outline-light my-2 my-sm-0" id = "searchButton" type="submit">Search</button>
                 </form>
+                <div id="recentsearches"></div>
             </div>
             <div class="jumbotron col-md-4 col-sm-4 landing-filler" >
             </div>
@@ -110,7 +114,7 @@
 
     </div>
 
-    <!-- <footer class="footer ">copyright kittykuma.com</footer> -->
+    <footer class="footer ">copyright urbanexplorer.com <br>   <div class ="count"></div></footer>
 
     <!--make sure to put javascript on the bottom to alter the DOM, otherwise DOM not defined, can't alter DOM content with js method or function-->
     <!-- <script src="assets/javascript/urbanExplorerApp.js"></script> -->
