@@ -12,6 +12,9 @@ In this project, we will be using google place and geo api to create sth for tra
 * Bootstrap framework 
 * [Firebase online storage](https://firebase.google.com/)
 
+## Site demo gif
+![Alternate image text](https://github.com/Connor218/UrbanExplorer/blob/master/assets/images/working.gif)
+
 ## Deployed site
 * [Click Here](https://connor218.github.io/UrbanExplorer/)
 
